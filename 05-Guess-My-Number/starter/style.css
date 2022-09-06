@@ -92,6 +92,7 @@ h1 {
   width: 25rem;
   text-align: center;
   display: block;
+  outline: none;
   margin-bottom: 3rem;
 }
 
