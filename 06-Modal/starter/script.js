@@ -24,11 +24,13 @@ overlay.addEventListener('click', closeModal);
 
 //there are three keyboard events-keyup,keydown and keypress.
 //keypress is now deprecated
-//each event listener takes an event as a parameter for its callback function,
+//each event listener takes an event object as a parameter for its callback function,
 //we can use that event parameter to get which key is pressed, its keycode etc
 //keycode is now deprecated so instead use key to get which key is pressed
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
-    closeModal();
+    if (!modal.classList.contains('hidden')) {
+      closeModal();
+    }
   }
 });
