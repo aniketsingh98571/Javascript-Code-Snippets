@@ -10,6 +10,8 @@ let activePlayer = 0;
 let playing = true;
 let finalScores = [0, 0];
 let currentScore = 0;
+
+//resetting everything
 const newGameStart = () => {
   diceValue = 0;
   activePlayer = 0;
@@ -26,6 +28,8 @@ const newGameStart = () => {
   document.querySelector(`.player--1`).classList.remove('player--active');
 };
 window.addEventListener('load', newGameStart);
+
+//when we click on hold
 const switchRoles = () => {
   document.getElementById(`current--${activePlayer}`).textContent = 0;
   currentScore = 0;
@@ -35,12 +39,13 @@ const switchRoles = () => {
 };
 diceRoll.addEventListener('click', () => {
   if (playing) {
-    diceValue = Math.trunc(Math.random() * 6) + 1;
-    diceImage.src = `dice-${diceValue}.png`;
-    diceImage.classList.remove('hidden');
+    diceValue = Math.trunc(Math.random() * 6) + 1; //Dice values ranges from 1 to 6
+    diceImage.src = `dice-${diceValue}.png`; //showing dice images based on dice value
+    diceImage.classList.remove('hidden'); //initially when the page renders, dice is not visible since the user hasn't clicked the //roll button, so when he clicks the roll button, a number is generated between 1 to 6   //and based on the number a image is displayed
     if (diceValue !== 1) {
+      //if the dice value is not 1 then keep the player playing, else switch the player with  its current score set to 1
       currentScore = currentScore + diceValue;
-      document.getElementById(`current--${activePlayer}`).textContent =
+      document.getElementById(`current--${activePlayer}`).textContent = //dynamically setting the score to the UI by using dynamic ID.
         currentScore;
     } else {
       switchRoles();
@@ -49,17 +54,18 @@ diceRoll.addEventListener('click', () => {
 });
 diceHold.addEventListener('click', () => {
   if (playing) {
-    finalScores[activePlayer] = currentScore + finalScores[activePlayer];
+    finalScores[activePlayer] = currentScore + finalScores[activePlayer]; //when the user clicks on hold button we have to add the current score to its final score array, which in turn will be used to check the winner.
     document.querySelector(`#score--${activePlayer}`).textContent =
       finalScores[activePlayer];
     if (finalScores[activePlayer] >= 20) {
+      //if a player has its final score greater than equal 20,he wins
       document
-        .querySelector(`.player--${activePlayer}`)
+        .querySelector(`.player--${activePlayer}`) //adding winner class to the active player
         .classList.add('player--winner');
       document
         .querySelector(`.player--${activePlayer}`)
         .classList.remove('player--active');
-      playing = false;
+      playing = false; //this is a state which we are maintaining, like if a user wins the game then they cannot click the buttons anymore. setting the playing to true resumes the game
     } else {
       switchRoles();
     }
