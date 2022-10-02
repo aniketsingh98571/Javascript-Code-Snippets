@@ -34,6 +34,9 @@ const restaurant = {
   },
   orderPasta:function(ing1,ing2,ing3){
     console.log(`here is your pasta with ${ing1},${ing2},${ing3}`)
+  },
+  orderPizza:function(mainIng,...restIng){
+    console.log(mainIng,restIng)
   }
 };
 
@@ -160,10 +163,57 @@ console.log(newStr)
 console.log(...str1)
 
 //using spread operators in function call
-const ingredients=[prompt("ing1?"),prompt("ing2?"),prompt("ing3?")]
-console.log(ingredients)
-restaurant.orderPasta(...ingredients)
+// const ingredients=[prompt("ing1?"),prompt("ing2?"),prompt("ing3?")]
+// console.log(ingredients)
+// restaurant.orderPasta(...ingredients)
 
 //using spread operator in objects
 const restaurantCopy={...restaurant}
 console.log(restaurantCopy)
+
+//adding new property to an existing object.
+const restaurantCopy1={...restaurant,hobby:"singing"}
+console.log(restaurantCopy1)
+
+//REST Operator
+//Note-Spread operator is used to unpack all values from arrays or objects, while REST is used to pack the values in arrays or objects.
+//Spread is mostly used on right handside of equal sign while REST is used at left handside of equal sign.
+
+//Spread Example:-
+const arr1=[1,2,3,4]
+const arr21=[...arr1,5,6]
+console.log(arr21)
+
+//REST Example with destructuring
+//As we can see here that we have used REST operator to pack remainig elements of an array.
+const [ele1,ele2,...others]=[1,2,3,4,5,6]
+console.log(ele1,ele2,others)
+
+//REST with spread operator
+//On the left side is REST Operator
+//On the right hand side is Spread Operator
+//Note:-The REST operator should be at the last during destructuring
+const [p1,q1,...otherDishes]=[...restaurant.mainMenu,...restaurant.starterMenu]
+console.log(p1,q1,otherDishes)
+
+//REST with objects
+const {name:myname,...restObject}=restaurant
+console.log(myname,restObject)
+
+//REST in function
+//REST operator is used in function definition to pack all the arguments into an array.
+//While spread operator is used in function call to unpack all the elements and pass them individually
+//REST operator example below in  function definition
+const add=function(...params){
+  console.log(params)
+}
+add(1,2)
+add(1,2,3)
+add(1,2,3,4)
+add(1,2,3,4,5)
+
+//spread operator example below in function call
+const x1=[1,2,3,4,7]
+add(...x1)
+
+restaurant.orderPizza('mushroom','capsicum','chilli','honey')
