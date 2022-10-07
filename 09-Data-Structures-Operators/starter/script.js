@@ -267,7 +267,7 @@ const game = {
     ],
   ],
   score: '4:0',
-  scored: ['Lewandowski', 'Gnarby', 'Lewandowski', 'Hummels'],
+  scored: ['Lewandowski', 'Gnarby', 'Lewandowski', 'Hummels','Gnarby','Aniket','Hummels','Aniket'],
   date: 'Nov 9th, 2037',
   odds: {
     team1: 1.33,
@@ -299,5 +299,165 @@ for (const item of menu) {
 
 //for-of loop doesn't provide any mechanism to get the index of an element in array, so inorder to get the index of elements in for-of loop refer below:-
 //'.entries' function returns the elements of array in key-value pair of index with element at that index in another array form
-for (const item of menu.entries()) console.log(item);
+for (const [index, item] of menu.entries()) console.log(item);
 console.log(menu.entries());
+
+//Enhanced Object Literal
+const obj2 = {
+  occupation: 'SDE',
+  work: 'Frontend',
+};
+const games = ['cricket', 'football'];
+//adding another variable as property directly in an object is called Enhanced Object literal
+const obj1 = {
+  name: 'Aniket',
+  age: 22,
+  hobby: ['cricket', 'music'],
+  obj2,
+  games,
+};
+console.log(obj1);
+
+//In normal javascript object, we would define a function something like below:-
+const obj3 = {
+  name: 'Aniket',
+  age: 21,
+  hobby: ['cricket', 'football'],
+  yourName: function () {
+    console.log(this.name);
+  },
+};
+obj3.yourName();
+
+//But using Enhanced Object Literal, functions can be written like below:-
+const obj4 = {
+  name: 'Aniket',
+  age: 21,
+  hobby: ['cricket', 'football'],
+  yourName() {
+    console.log(this.name);
+  },
+};
+obj4.yourName();
+
+//we can also do some computation in the object with the help of enhanced object literal. Initially when javascript was introduced, computation in objects was not possible but with enhanced object literal it is possible now.
+const runs = [4, 5, 6];
+const obj5 = {
+  [2 + 2]: 'aniket',
+  age: 25 + 2,
+  [runs[2]]: 'runs',
+};
+console.log(obj5);
+
+//Optional Chaining
+const obj7 = {
+  name: 'Bob',
+  work: 'builder',
+  age: 25,
+  yourName() {
+    console.log(this.name);
+  },
+  hobby: {
+    one: 'Cricket',
+    two: 'Football',
+  },
+};
+
+//here we are using optional chaining operator to check if yourName function is present in obj7 or not, if not present undefined will be returned else function will be called
+obj7.yourName?.();
+
+//here we are using optional chaining operator to check if hobby object is present in obj7 or not, if present then we will access one property of hobby object else undefined will be returned
+console.log(obj7.hobby?.one);
+
+//here since obj7 does not contain current property so it will not further proceed to access value property instead returns undefined
+console.log(obj7.current?.value);
+
+//Iterating over Objects
+const iterate = Object.keys(restaurant.starterMenu);
+console.log(iterate);
+console.log(Object.values(obj7));
+const entries = Object.entries(obj7);
+console.log(entries);
+const arr7 = [1, 2, 3];
+for (const data of arr7.entries()) {
+  console.log(data);
+}
+
+//Coding Challenge 2
+for (const [goalNo, playerName] of game.scored.entries()) {
+  console.log(`Goal ${goalNo} ${playerName}`);
+}
+
+const oddsEntries = Object.entries(game.odds);
+console.log(oddsEntries)
+let average = sum = 0;
+for (const [property, [value,name]] of oddsEntries.entries()) {
+ sum=sum+name
+}
+console.log(sum)
+average=sum/oddsEntries.length
+console.log(average)
+const printOddsEntries=Object.entries(game.odds)
+for(const [index,[property,value]] of printOddsEntries.entries()){
+  console.log(`Odd of victory ${game[property]||'draw'}: ${value}`)
+}
+const scorers={
+
+}
+for(let i=0;i<game.scored.length;i++){
+let count=1;
+  for(let j=i+1;j<game.scored.length;j++){
+    if(game.scored[i]===game.scored[j]){
+      count++;
+      game.scored[j]=-1
+    }
+     
+  }
+
+  if(game.scored[i]!==-1)
+    scorers[game.scored[i]]=count
+}
+// scored: ['Lewandowski', 'Gnarby', 'Lewandowski', 'Hummels'],
+console.log(scorers)
+
+//SETS in JS
+//SETS contains only unique elements, SETS are also iterables like arrays and objects
+//Even if we add duplicate elements in set but during pringting it will consider only unique ones.
+//Since JS is case-sensitive 'Pasta' and 'pasta' are different
+//Set is basically an object which takes arrays as input
+//In SET, elements are randomly placed
+const orderedSet=new Set(['Pasta','Pizza','Pumpkin','Pizza','pasta'])
+const orderSet2=new Set([1,2,3,4,1])
+console.log(orderSet2)
+console.log(orderedSet)
+
+//checking size of SET
+console.log(orderedSet.size)
+
+//checking if an element is present in SET or not
+console.log(orderedSet.has('Pizza'))
+console.log(orderedSet.has('Bruschetta'))
+
+//adding element in the SET
+orderedSet.add('Bruschetta')
+console.log(orderedSet)
+
+//deleting element in SET
+orderedSet.delete("Pizza")
+console.log(orderedSet)
+
+//looping over the SET
+for(const data of orderedSet)
+  console.log(data)
+
+//clearing the entire set
+orderedSet.clear()
+console.log(orderedSet)
+
+//Usecase for SET- suppose if we want an array with only unique elements then we can use set.
+const staff=['Pankaj','Mohammad','Ismail','Pankaj','Kendra','Ismail']
+//since we want an array, thats why we have used spread operator here
+const staffSet=[...new Set(staff)]
+console.log(staffSet)
+
+
