@@ -461,3 +461,62 @@ const staffSet=[...new Set(staff)]
 console.log(staffSet)
 
 
+//Maps in JS
+//In object, the keys are string. We cannot assign any other data-type as keys in objects.
+//In object, if we add same key name multiple times then it will take the last key and its value.
+const obj8={
+  1:"Aniket",
+  Hi:"Singh",
+  Hi:"Hello"
+}
+console.log(obj8)
+console.log(typeof Object.keys(obj8))
+//As we can see
+for(const data of Object.keys(obj8))
+  console.log(typeof data)
+
+const rest = new Map()
+rest.set('name','Italian')
+rest.set(1,'Italian')
+rest.set(1,'Italian1')
+console.log(rest)
+for(const [data,value] of rest){
+  console.log(typeof data)
+}
+
+//getting values from map
+console.log(rest.get('name'))
+
+//checking if a key is present or not in map
+console.log(rest.has('name'))
+
+//deleting a key with its value from map
+rest.delete(1)
+console.log(rest)
+
+//checking the size of map
+console.log(rest.size)
+
+//clearing the entire map
+rest.clear()
+console.log(rest)
+
+//Initializing Map
+const rest2=new Map([
+  [1,"One"],
+  [2,"Two"],
+  [3,"Three"]
+])
+console.log(rest2)
+
+//Iterating over Maps
+for(const [key,value] of rest2)
+  console.log(value)
+
+//converting a map into an array
+const mapArray=[...rest2]
+console.log(mapArray)
+
+//Data Structure in JS as of now
+//1. Array  2. Object  3.Set  4. Map
+
