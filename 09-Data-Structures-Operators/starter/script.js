@@ -773,22 +773,5 @@ const flightsCheck =
   '_Delayed_Departure;fao937410;txl2133456;11:25 +_Arrival;bru0512352;fao93745;11:45 +_Delayed_Arrival;hel452652;fao9854123;12:05 +_Departure;fao85412;lis232252;12:30';
 
 flightFormat(flightsCheck);
-//Delayed Departure from FAO to TXL (11h25)
-// const removePlus = schedule[0].replace('_', '').replaceAll(':', 'h').split('+');
-//   console.log(removePlus);
-//   let removeColon = [];
-//   const formatedPlaces = [];
-//   for (const data of removePlus) {
-//     removeColon.push(data.split(';'));
-//   }
-//   console.log(removeColon);
-//   for (const data of removeColon) {
-//     let formatedPlace = {};
-//     formatedPlace.from = data[1].slice(0, 3);
-//     formatedPlace.to = data[2].slice(0, 3);
-//     formatedPlaces.push(formatedPlace);
-//   }
-//   console.log(formatedPlaces);
-//   for (const data of removeColon) {
-//     // let firstWord = console.log(firstWord);
-//   }
+
+//More depth in Functions
