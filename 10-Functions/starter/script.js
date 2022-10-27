@@ -245,3 +245,73 @@ function displayResults(choice) {
     console.log(this.answers);
   }
 }
+//IIFE - Immediately Invoked Function Expressions
+(function () {
+  console.log('IIFE One');
+})();
+
+(() => {
+  console.log('IIFE TWO');
+})();
+
+//closures
+const secureBooking = function () {
+  let passengerCount = 0;
+  return function () {
+    passengerCount++;
+    console.log(`${passengerCount} passengers`);
+  };
+};
+
+const booker = secureBooking();
+console.dir(booker);
+booker();
+console.dir(booker);
+booker();
+console.dir(booker);
+
+//Example 1
+
+//here since we have first called inner(), so the inner() function has got outer in its variable environment and outer has been assigned a function. Now here since the inner() function execution context came to end but still outer() has its variable enviromnent reference just because of closures.
+//here since we have first called inner(), so the inner() function has got outer in its variable environment and outer has been assigned a function. Now here since the inner() function execution context came to end but still outer() has its variable enviromnent reference just because of closures.
+//And also note here that it is mandatory that we call inner() first becuase outer() is in inner()'s execution context, so if we call outer() first before inner() JS will not get any context about what is outer() and will throw undefined error.
+let outer;
+const inner = function () {
+  const a = 23;
+  outer = function () {
+    console.log(a * 2);
+  };
+};
+
+inner();
+outer();
+
+//Example 2
+
+//In this example, we have created an innerTwo function and in the innerTwo function we are again reasigning the outer variable to some other function. Now here we have first called above inner() function and then called the outer() function. And on the other hand we have first called innerTwo() function followed by again calling outer() function. Now here the trick is that we have assigned the outer variable two different functions at two different places.
+const innerTwo = function () {
+  const b = 777;
+  outer = function () {
+    console.log(b * 2);
+  };
+};
+//in this step, the outer() function has its scope bind to inner function.
+inner();
+outer();
+console.dir(outer);
+
+//in this step, the outer() function has its scope bind to innerTwo function.
+innerTwo();
+outer();
+console.dir(outer);
+
+//Example 3
+const boardPassengers = function (n, wait) {
+  const peerGroup = n / 3;
+  setTimeout(function () {
+    console.log(`We are now boarding all ${n} passengers`);
+    console.log(`There are 3 groups, each with ${peerGroup} passengers`);
+  }, wait * 1000);
+  console.log(`will start boarding in ${wait}`);
+};
+boardPassengers(180, 3);
