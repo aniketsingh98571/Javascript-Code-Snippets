@@ -315,3 +315,12 @@ const boardPassengers = function (n, wait) {
   console.log(`will start boarding in ${wait}`);
 };
 boardPassengers(180, 3);
+
+//coding challenge
+//another example of closure with IIFE and callback function
+(function () {
+  const header = document.querySelector('h1');
+  window.addEventListener('click', function () {
+    header.style.color = 'red';
+  });
+})();
