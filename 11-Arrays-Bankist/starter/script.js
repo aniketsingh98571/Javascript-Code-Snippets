@@ -32,8 +32,13 @@ const account4 = {
   interestRate: 1,
   pin: 4444,
 };
-
-const accounts = [account1, account2, account3, account4];
+const account5 = {
+  owner: 'Aniket Singh',
+  movements: [430, 1000, 700, 50, 90],
+  interestRate: 5,
+  pin: 98571,
+};
+const accounts = [account1, account2, account3, account4, account5];
 
 // Elements
 const labelWelcome = document.querySelector('.welcome');
@@ -76,6 +81,28 @@ const displayMovements = function (movements) {
   });
 };
 displayMovements(account1.movements);
+
+function computeUserName(accounts) {
+  for (const account of accounts) {
+    const intermediateUserName = account.owner.toLowerCase().split(' ');
+    let userName = '';
+    for (const name of intermediateUserName) {
+      userName = userName + name[0];
+    }
+    account.username = userName;
+    console.log(userName);
+  }
+}
+computeUserName(accounts);
+
+const accountBalance = function (movements) {
+  const balance = movements.reduce(function (accumulator, currentValue) {
+    return accumulator + currentValue;
+  });
+  labelBalance.textContent = `${balance} EURO`;
+};
+accountBalance(account1.movements);
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -224,6 +251,22 @@ const converterEuro = movements.map(function (data, index) {
   return data * euroToUSD;
 });
 console.log(converterEuro);
+const movementsOf = [];
+for (const data of movements) {
+  movementsOf.push(data * 1.1);
+}
+console.log(movementsOf);
+
+//map using arrow function
+const movementsArrow = movements.map(data => data * euroToUSD);
+console.log(movementsArrow);
+
+//the callback function of map method takes max 3 arguments in which element is compulsory one and rest arguments like index and whole array is optional
+const arr87 = [1, 2, 3, 4, 5, 6];
+const multiplyByThree = arr87.map(function (element, index, wholeArray) {
+  return `At index ${index}, when we multiply ${element} by three we get ${element * 3}`;
+});
+console.log(multiplyByThree);
 
 //filter method of array
 const arr11 = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -232,12 +275,38 @@ const newFilterArray = arr11.filter(function (data, index) {
 });
 console.log(newFilterArray);
 
+const deposits = movements.filter(function (data, index) {
+  return data > 0;
+});
+console.log(deposits);
+const withdrawls = movements.filter(function (data, index) {
+  return data < 0;
+});
+console.log(withdrawls);
+
 //reduce method array
 const arr12 = [1, 2, 3, 4, 5, 6, 7, 8];
 const addAll = arr12.reduce(function (previousValue, currentValue) {
   return previousValue + currentValue;
 });
 console.log(addAll);
+const balance = movements.reduce(function (
+  accumulator,
+  currentValue,
+  index,
+  wholeArray
+) {
+  return currentValue + accumulator;
+});
+console.log(balance);
+
+const arr57 = [25, 43, 24, 98, 14, 105];
+let max = 0;
+const maxValue = arr57.reduce(function (accumulator, currentValue) {
+  if (accumulator > currentValue) return accumulator;
+  else return currentValue;
+});
+console.log(maxValue);
 
 //coding challenge
 const calcAverageHumanAge = function (ages) {
