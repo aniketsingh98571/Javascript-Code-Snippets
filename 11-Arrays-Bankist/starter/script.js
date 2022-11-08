@@ -34,9 +34,9 @@ const account4 = {
 };
 const account5 = {
   owner: 'Aniket Singh',
-  movements: [430, 1000, 700, 50, 90],
+  movements: [430, 1000, 700, 50, 90, -300, -20],
   interestRate: 5,
-  pin: 98571,
+  pin: 9857,
 };
 const accounts = [account1, account2, account3, account4, account5];
 
@@ -80,7 +80,7 @@ const displayMovements = function (movements) {
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 };
-displayMovements(account1.movements);
+// displayMovements(account1.movements);
 
 function computeUserName(accounts) {
   for (const account of accounts) {
@@ -95,14 +95,109 @@ function computeUserName(accounts) {
 }
 computeUserName(accounts);
 
-const accountBalance = function (movements) {
-  const balance = movements.reduce(function (accumulator, currentValue) {
+const accountBalance = function (account) {
+  const balance = account.movements.reduce(function (
+    accumulator,
+    currentValue
+  ) {
     return accumulator + currentValue;
   });
+  account.balance = balance;
+  console.log(balance);
   labelBalance.textContent = `${balance} EURO`;
 };
-accountBalance(account1.movements);
+// accountBalance(account1.movements);
+const calcDisplaySummary = function (account) {
+  const incomes = account.movements
+    .filter(function (data) {
+      return data > 0;
+    })
+    .reduce(function (accumulator, currentValue) {
+      return accumulator + currentValue;
+    });
+  labelSumIn.textContent = `${incomes} EURO`;
+  const outgoing = account.movements
+    .filter(function (data) {
+      return data < 0;
+    })
+    .reduce(function (accumulator, currentValue) {
+      return accumulator + currentValue;
+    });
+  labelSumOut.textContent = `${Math.abs(outgoing)} EURO`;
+  const interest = account.movements
+    .filter(function (data) {
+      return data > 0;
+    })
+    .map(function (data) {
+      return (data * account.interestRate) / 100;
+    })
+    .filter(function (data) {
+      return data >= 1;
+    })
+    .reduce(function (accumulator, currentValue) {
+      return accumulator + currentValue;
+    });
+  labelSumInterest.textContent = `${interest} EURO`;
+};
+// calcDisplaySummary(account1.movements);
+let loginAccount;
+btnLogin.addEventListener('click', function (e) {
+  e.preventDefault();
 
+  loginAccount = accounts.find(function (account) {
+    return account.username === inputLoginUsername.value.trim();
+  });
+
+  if (loginAccount?.pin === Number(inputLoginPin.value.trim())) {
+    inputLoginUsername.value = inputLoginPin.value = ' ';
+    // inputLoginPin.blur();
+    console.log('logged in');
+    labelWelcome.textContent = `Welcome Back, ${loginAccount.owner.split(
+      ' '[0]
+    )}`;
+    containerApp.style.opacity = 100;
+    updateUI(loginAccount);
+  } else {
+    alert('Wrong Credentials');
+  }
+});
+const updateUI = function (account) {
+  displayMovements(account.movements);
+  calcDisplaySummary(account);
+  accountBalance(account);
+};
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const receiverAccount = accounts.find(function (data) {
+    return data.username === inputTransferTo.value;
+  });
+  if (
+    amount > 0 &&
+    loginAccount.balance >= amount &&
+    receiverAccount.username !== loginAccount.username &&
+    receiverAccount
+  ) {
+    loginAccount.movements.push(-amount);
+    receiverAccount.movements.push(amount);
+    updateUI(loginAccount);
+  }
+  inputTransferAmount.value = inputTransferTo.value = '';
+});
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+  if (
+    inputCloseUsername.value === loginAccount.username &&
+    Number(inputClosePin.value) === loginAccount.pin
+  ) {
+    const index = accounts.findIndex(function (data) {
+      return data.username === loginAccount.username;
+    });
+    accounts.splice(index, 1);
+    console.log(accounts);
+    containerApp.style.opacity = 0;
+  }
+});
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -327,3 +422,50 @@ const calcAverageHumanAge = function (ages) {
 };
 calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]);
 calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]);
+
+//Method Chaining
+const totalDepositsUSD = movements
+  .filter(function (data) {
+    return data > 0;
+  })
+  .map(function (data) {
+    return data * euroToUSD;
+  })
+  .reduce(function (accumulator, currentValue) {
+    return accumulator + currentValue;
+  });
+console.log(totalDepositsUSD);
+
+//coding challenge 3
+const againCalcAverage = function (nos) {
+  const averageArray = nos
+    .filter(function (data) {
+      return data > 1;
+    })
+    .reduce(function (accumulator, currentValue) {
+      return accumulator + currentValue;
+    });
+  console.log(averageArray / nos.length);
+};
+againCalcAverage([5, 2, 4, 1, 15, 8, 3]);
+
+//find method
+//The find method works on the array and finds the first occurence of an element for which a condition is met.
+//Filter method returns a new array based on given condition but find method returns a single value i.e first occurence of an element for which a condition is met.
+const arr14 = [1, 5, 7, 6, 9];
+const firstConditionMetElement = arr14.find(function (data) {
+  return data > 5;
+});
+console.log(firstConditionMetElement);
+
+//finding single account from accounts array of bankist using some condition
+const singleAccn = accounts.find(function (account) {
+  return account.owner === 'Jessica Davis';
+});
+console.log(singleAccn);
+//using for-of loop
+for (const account of accounts) {
+  if (account.owner === 'Jessica Davis') {
+    console.log(account);
+  }
+}
