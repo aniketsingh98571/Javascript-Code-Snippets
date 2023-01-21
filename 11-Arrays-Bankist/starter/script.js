@@ -66,9 +66,13 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements,sort=false) {
   containerMovements.innerHTML = '';
-  movements.forEach(function (data, index, array) {
+  const movs=sort?movements.slice().sort((a,b)=>{
+    if(a>b) return 1;
+    if(b>a) return -1
+  }):movements
+  movs.forEach(function (data, index, array) {
     const type = data > 0 ? 'deposit' : 'withdrawal';
     const html = ` <div class="movements__row">
     <div class="movements__type movements__type--${type}">${
@@ -153,7 +157,7 @@ btnLogin.addEventListener('click', function (e) {
     // inputLoginPin.blur();
     console.log('logged in');
     labelWelcome.textContent = `Welcome Back, ${loginAccount.owner.split(
-      ' '[0]
+      ' '[1]
     )}`;
     containerApp.style.opacity = 100;
     updateUI(loginAccount);
@@ -198,6 +202,27 @@ btnClose.addEventListener('click', function (e) {
     containerApp.style.opacity = 0;
   }
 });
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+  console.log('Loan');
+  const loanAmount = Number(inputLoanAmount.value);
+  if (
+    loanAmount > 0 &&
+    loginAccount.movements.some(function (data) {
+      return data >= loanAmount * 0.1;
+    })
+  ) {
+    loginAccount.movements.push(loanAmount);
+    updateUI(loginAccount);
+    inputLoanAmount.value = '';
+  }
+});
+let sortedState=false;
+btnSort.addEventListener('click',function(e){
+  e.preventDefault()
+  displayMovements(loginAccount.movements,!sortedState)
+  sortedState=!sortedState
+})
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -469,3 +494,141 @@ for (const account of accounts) {
     console.log(account);
   }
 }
+//some and every method
+console.log(movements);
+//the includes method only does strict equality check and returns boolean based on provided value.  We cannot provide any expressions in includes method
+console.log(movements.includes(-130));
+
+//some method
+//the some method takes a callback function which iterates through all the elements of an array and returns boolean based on condition, in some method we can write an expression while in includes method we cant. Some method looks for some elements based on condition and returns the boolean eventhough some conditions are satisfied
+const checkDeposit = movements.some(function (data) {
+  return data > 0;
+});
+console.log(checkDeposit);
+
+//every method
+//the every method takes a callback function which iterates through all the elements of an array and returns boolean based on condition, in every method we can write expression too just like some method. Every method is slightly different than some method in a sense, in some method even if a single condition is met then the some method returns true but in every method all the elements should satisfy the given condition otherwise false will be returned
+const checkDeposit2 = movements.every(function (data) {
+  return data > 0;
+});
+console.log(checkDeposit2);
+
+//flat and flatMap method of array
+
+//flat method
+//the flat method converts the deeply nested array into a single array with all the elements.
+const arr47 = [[1, 2, 3], 4, 5, [6, 7, 8]];
+const flatArray = arr47.flat();
+console.log(flatArray);
+
+//by default the flat method converts the deeply nested array into a single array by just 1 level, so if you have more deep nested array lets suppose 2 to 3 levels nesting then we have to provide the flat method an argument about how much deep we want to go and extract all the elements to a single array.
+const arr48 = [[1, 2, [3, 4], 5, 6], 7, 8, [9, 10, [11, 12], 13]];
+const flatArrayDeep = arr48.flat(2);
+console.log(flatArrayDeep);
+
+//flatMap
+//flatMap method is a combination of map and flat method, it first maps on array and then flattens it. Note here is that, the flatMap method can go only 1 level deep for flatening
+
+//sorting arrays
+//sort() method only works with strings, if the array contains numbers then the sort method convert the number into string and then do the computation.sort method also mutates the original array
+
+const owners = ['Jack', 'Aniket', 'Martha', 'Zach', 'Amit'];
+console.log(owners.sort());
+
+const nos = [5, 4, 2, 9, 5, 7, 1];
+console.log(nos.sort());
+
+//as we can see here that, sort method did some mistakes here, the correct output should be [-5,-1,2,3,4,5]
+//but the actual output is [-1,-5,2,3,4,5] the reason is because sort method converted the numbers into strings and the minus sign has higher precendence thats why it came first followed by numbers in line. In order to solve this problem we use a callback function in sort method which takes 2 arguments current value and next value.
+const nos2 = [-1, -5, 2, 5, 4, 3];
+//for ascending sort
+//return positive if we want to switch
+//return negative if we dont want to switch
+nos2.sort(function (current, next) {
+  if (current > next) return 1;
+  else if (current < next) return -1;
+});
+console.log(nos2);
+
+//sort() function in arrays.
+//In Strings
+const owners2=['Jonas','Zach','Adam','Martha']
+console.log(owners2.sort())
+
+//In Numbers
+const numbers2=[45,65,10,100,2500]
+console.log(numbers2.sort())
+
+//Sort function takes an array and sorts it based on strings, it mutates the original array. If you give an array of numbers to sort then the sort function will first convert those numbers into strings and then it will do sorting.
+//In order to sort the numbers in array using sort() function then we have to use a callback function which is provided by sort()function. The callback function takes two parameters, 1st the current number and 2nd the number after the current number, its just like assuming two consecutive numbers in an array. 
+//Example take two numbers 400,-140 now if we want to sort these two numbers in ascending order with the help of sort function so in the callback function we will compare if first number is greater than second one, if true then we will return any positive number else we will return any negative number.
+//If you want to swap the numbers then return positive number
+//else return negative number
+
+//ascending order
+numbers2.sort((a,b)=>{
+  if(a>b) 
+    return 1;
+  if(b>a)
+    return -1;
+})
+console.log(numbers2)
+
+//descending order
+numbers2.sort((a,b)=>{
+  if(a>b) 
+    return -1;
+  if(b>a)
+    return 1;
+})
+console.log(numbers2)
+
+//fill method
+//fill method fills the entire array with a single element, it works on the array constructor. fill method also takes 3 arguments,1st the element which we have to fill,2nd the position to start filling the array and 3rd the position where we have to end the fill position.
+const arr575=new Array(4)
+arr575.fill(7)
+arr575.fill(23,2)
+console.log(arr575)
+
+//from method
+//the from method do the same thing like fill for filling the array but here you can enter series of numbers.
+const arr741= Array.from({length:7},(curr,i)=>i+1)
+console.log(arr741)
+const arr841= Array.from({length:7},(curr,i)=>i>0?Math.round(Math.random()*6):1)
+console.log(arr841)
+
+//coding challenge
+const dogs = [
+  { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
+  { weight: 8, curFood: 200, owners: ['Matilda'] },
+  { weight: 13, curFood: 275, owners: ['Sarah', 'John'] },
+  { weight: 32, curFood: 340, owners: ['Michael'] },
+  ];
+  dogs.forEach(function(dog){
+    const recommendFood=dog.weight**0.75*28
+    dog["recommendFood"]=recommendFood
+  })
+  console.log(dogs)
+  dogs.forEach(function(dog){
+    if(dog.owners.includes("Sarah")){
+       if(dog.curFood>dog.recommendFood){
+        console.log("Its eating too much")
+      }
+      else
+        console.log("Not eating too much")
+    }
+})
+let ownersEatTooMuch=[]
+let ownersEatTooLess=[]
+dogs.forEach((dog)=>{
+  if(dog.curFood>dog.recommendFood){
+    const temp=[...ownersEatTooMuch,...dog.owners]
+    ownersEatTooMuch=temp
+  }
+  else{
+    const temp=[...ownersEatTooLess,...dog.owners]
+    ownersEatTooLess=temp
+  }
+})
+console.log(ownersEatTooMuch)
+console.log(ownersEatTooLess)
