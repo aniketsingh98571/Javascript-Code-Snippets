@@ -223,6 +223,40 @@ btnSort.addEventListener('click',function(e){
   displayMovements(loginAccount.movements,!sortedState)
   sortedState=!sortedState
 })
+const numDeposits=accounts.flatMap((acc)=>acc.movements).reduce((count,cur)=>(
+  cur>=1000?count+1:count),0
+)
+console.log(numDeposits)
+console.log(accounts.flatMap((acc)=>acc.movements))
+
+const sums=accounts.flatMap(acc=>acc.movements).reduce((sum,cur)=>{
+  cur>0?sum.deposits+=cur:sum.withdrawls+=cur
+  return sum
+},{deposits:0,withdrawls:0})
+console.log(sums)
+
+//question ---->convert from "this is a nice title" to "This Is a Nice Title"
+const converTitle=function(title){
+  const exceptions=['a','an','the','but','and','or','on','in','with']
+  const titleCase=title.toLowerCase()
+  const splittedTitle=titleCase.split(" ")
+  const changedTitle=splittedTitle.map((word)=>{
+    if(!exceptions.includes(word)){
+      return word[0].toUpperCase()+word.substr(1,)
+    }
+    else{
+      return word
+    }
+  })
+  return changedTitle.join(" ")
+}
+console.log(converTitle('this is a nice title'))
+console.log(converTitle('this is a LONG title but not too long'))
+console.log(converTitle('and here is another title with an EXAMPLE'))
+// const sumsArray=accounts.flatMap(acc=>acc.movements).reduce((sum,cur)=>{
+//   cur>0?sum[0]+=cur:sum[1]+=cur
+// },[])
+// console.log(sumsArray)
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -632,3 +666,14 @@ dogs.forEach((dog)=>{
 })
 console.log(ownersEatTooMuch)
 console.log(ownersEatTooLess)
+// ownersEatTooMuch.forEach()
+console.log(`${ownersEatTooMuch.join(' and ')} dogs eat too much`)
+console.log(`${ownersEatTooLess.join(' and ')} dogs eat too less`)
+console.log(dogs.some((dog)=>{
+  dog.curFood===dog.recommendFood
+}))
+const checkEatingOkay=dog=>dog.curFood>dog.recommendFood*0.9&&dog.curFood<dog.recommendFood*1.1
+console.log(dogs.some(checkEatingOkay))
+console.log(dogs.filter(checkEatingOkay))
+const dogsCopy=dogs.slice().sort((a,b)=>a.recommendFood-b.recommendFood)
+console.log(dogsCopy)
