@@ -94,7 +94,7 @@ const displayMovements = function (movements, sort = false) {
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-        <div class="movements__value">${mov}€</div>
+        <div class="movements__value">${mov.toFixed(2)}€</div>
       </div>
     `;
 
@@ -104,7 +104,7 @@ const displayMovements = function (movements, sort = false) {
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${acc.balance}€`;
+  labelBalance.textContent = `${acc.balance.toFixed(2)}€`;
 };
 
 const calcDisplaySummary = function (acc) {
@@ -116,7 +116,7 @@ const calcDisplaySummary = function (acc) {
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(out)}€`;
+  labelSumOut.textContent = `${Math.abs(out.toFixed(2))}€`;
 
   const interest = acc.movements
     .filter(mov => mov > 0)
@@ -126,7 +126,7 @@ const calcDisplaySummary = function (acc) {
       return int >= 1;
     })
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest}€`;
+  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
 };
 
 const createUsernames = function (accs) {
@@ -182,7 +182,7 @@ btnLogin.addEventListener('click', function (e) {
 
 btnTransfer.addEventListener('click', function (e) {
   e.preventDefault();
-  const amount = Number(inputTransferAmount.value);
+  const amount = Math.floor(Number(inputTransferAmount.value));
   const receiverAcc = accounts.find(
     acc => acc.username === inputTransferTo.value
   );
@@ -248,6 +248,7 @@ btnSort.addEventListener('click', function (e) {
   sorted = !sorted;
 });
 
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -285,3 +286,90 @@ console.log(Number.isFinite(20))
 console.log(Number.isFinite('20'))
 console.log(Number.isFinite('p2x'))
 console.log(Number.isFinite(23/0))
+
+//Some Math Functions
+console.log(Math.sqrt(25)) //square root of 25
+console.log(25**(1/2)) //another way of calculating square root
+console.log(8**(1/3)) //cube root of 8    (**) is the exponential operator
+console.log(Math.trunc(25.55)) //Math.trunc method returns the integer part of the number by removing any fractional digits
+console.log(Math.trunc(Math.random()*10)+1)//Math.random() method returns a random value between 0 and 1, it will be in decimals mostly thats why we use Math.trunc() to neglect the decimal part. In this example we have multiplied it by 10 because we want random values between 0 & 10.
+const randomInt=(min,max)=>{
+  return Math.trunc(Math.random()*(max-min)+1)+min
+}
+console.log(randomInt(2,4))
+
+//Math.round() function rounds the number to the nearest number, for example if the number is 23.3,it will round to 23.If the number is 23.5,it will round to 24.Its like if the decimal part contains number less than 5,then it will be the same number but if the decimal part contains number greater than or equal to 5 then the number will be +1.
+console.log(Math.round(23.3))
+console.log(Math.round(23.5))
+console.log(Math.round(23.7))
+
+//Math.ceil() method returns the number+1[if in decimal]
+console.log(Math.ceil(23.3))
+console.log(Math.ceil(23.5))
+
+//Math.floor() method returns number[without decimal][if in decimal]
+console.log(Math.floor(23.3))
+console.log(Math.floor(-23.5))
+
+//Rounding decimals
+//toFixed() method returns the number with specified digits after the decimal, example 2.732.toFixed(2) will return 2.73 because we have specified 2 in the method.
+console.log((2.7).toFixed(0))
+console.log((2.734).toFixed(2))
+
+//Remainder operation
+console.log(5%2)
+console.log(4%2)
+
+//checking odd and even
+const checkEven=(number)=>number%2===0?true:false;
+console.log(checkEven(2))
+console.log(checkEven(3))
+console.log(checkEven(23))
+console.log(checkEven(24))
+
+//Numeric Separator
+//its very hard to read this number, so to make it more readable we use numeric separator
+const diameter=287460000000
+//Now its bit simpler to read
+const anotherDiameter=287_764_000_000
+console.log(anotherDiameter)
+
+//BigInt
+//9007199254740991 this is max value [2**53] a Number can store, if we want some bigger number than this, then we use BigInt
+
+//browser will fail to render this number as a integer
+console.log(4545646456454654564564545645645465465465464)
+
+//appending "n" to bigger number will convert them into BigInt numbers
+console.log(4545646456454654564564545645645465465465464n)
+
+//using BigInt() will also conver huge number to BigInt
+const hugeNum=BigInt(4545646456454654564564545645645465465465464)
+console.log(hugeNum)
+
+//this operation will fail, because there are two different number types here,1.bigInt 2.Number
+// console.log(hugeNum+25)
+
+//This will work because we have converted numer to BigInt()
+console.log(hugeNum+BigInt(25))
+
+//Math functions do not work with BigInt
+
+//Dates
+const now=new Date()
+console.log(now)
+console.log(new Date(2025,15,15,15,15,25)) //year  month  day  hour mins seconds
+//24*60*60*1000 //calculates no of seconds in a day
+console.log(new Date(3*24*60*60*1000))//3days after
+
+const future=new Date(2037,10,19,15,23)
+console.log(future.getFullYear())
+console.log(future.getMonth())
+console.log(future.getDay())
+console.log(future.getDate())
+console.log(future.getHours())
+console.log(future.getMinutes())
+console.log(future.getSeconds())
+console.log(future.toISOString())
+console.log(future.getTime()) //timestamp in milliseconds
+console.log(Date.now())//also returns current timestamp in milliseconds
