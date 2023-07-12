@@ -192,7 +192,32 @@ const updateUI = function (acc) {
 
 ///////////////////////////////////////
 // Event handlers
-let currentAccount;
+const startLogoutTimer=function(){
+  //set the time to 5 minutes
+  let time=300
+  //call the timer every second
+  const tick=function(){
+    //in each call.print the remaining time on UI
+    const min=time/60;
+    const sec=time%60
+    labelTimer.textContent=`${`${Math.floor(min)}`.padStart(2,0)}:${`${sec}`.padStart(2,0)}`;
+    
+ 
+    //when 0 seconds,stop timer and log out user
+     if(time===0){
+      clearInterval(timer);
+      labelWelcome.textContent="Login to get started"
+      containerApp.style.opacity=0
+     }
+      //decrease 1 second from time 
+      time--;
+    }
+      
+     tick()
+ const timer= setInterval(tick,1000)
+  return timer  
+}
+let currentAccount,timer;
 
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
@@ -213,7 +238,10 @@ btnLogin.addEventListener('click', function (e) {
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
-
+    if(timer){
+      clearInterval(timer)
+    }
+    timer=startLogoutTimer()
     // Update UI
     updateUI(currentAccount);
   }
@@ -240,6 +268,10 @@ btnTransfer.addEventListener('click', function (e) {
     receiverAcc.movementsDates.push(new Date().toISOString())
     // Update UI
     updateUI(currentAccount);
+    if(timer){
+      clearInterval(timer)
+      timer=startLogoutTimer()
+    }
   }
 });
 
@@ -255,6 +287,10 @@ btnLoan.addEventListener('click', function (e) {
 
     // Update UI
     updateUI(currentAccount);
+    if(timer){
+      clearInterval(timer)
+      timer=startLogoutTimer()
+    }
   }
   inputLoanAmount.value = '';
 });
@@ -441,6 +477,29 @@ function bringPizza(){
   console.log("Bring Pizzza")
 }
 setTimeout(bringPizza,2000)
-// setInterval(() => {
-//   console.log("Bring Pizza")
-// }, 3000);
+function runAfterTime(time){
+  console.log("I ran after",time/1000,"seconds")
+}
+setTimeout(runAfterTime,3000,3000)
+
+//clearing setTimeout()
+let timerId=setTimeout(()=>{
+  console.log("ran after 5s")
+},5000)
+console.log(timerId)
+clearTimeout(timerId)
+
+//setInterval method
+function runAfterIntervals(){
+  console.log("I ran after every intervals")
+}
+// setInterval(runAfterIntervals, 3000);
+
+function runAfterTimedInterval(time){
+  console.log("I ran after every",time," seconds")
+}
+// setInterval(runAfterTimedInterval,2000,2000)
+
+//clearing setInterval()
+let timerIntervalId=setInterval(runAfterTimedInterval,5000,2000)
+clearInterval(timerIntervalId)
