@@ -1,5 +1,7 @@
 'use strict';
 
+
+
 ///////////////////////////////////////
 // Modal window
 
@@ -26,6 +28,43 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
+
+//smooth scroll
+const btnScrollTo=document.querySelector('.btn--scroll-to')
+const section1=document.querySelector('#section--1')
+btnScrollTo.addEventListener('click',function(e){
+  const s1coords=section1.getBoundingClientRect()
+  console.log(s1coords)
+  console.log(e.target.getBoundingClientRect())
+  console.log('Current Scroll (X/y)',window.pageXOffset,window.pageYOffset)
+  console.log(window.scrollX,window.scrollY)
+  console.log('Height/width viewport',document.documentElement.clientHeight,document.documentElement.clientWidth)
+  //scrolling logic
+  //method one
+  // window.scrollTo(s1coords.left+window.scrollX,s1coords.top+window.window.scrollY)
+  //this is old method but supported in every browser
+  window.scrollTo({
+    left:s1coords.left+window.scrollX,
+    top:s1coords.top+window.scrollY,
+    behavior:'smooth'
+  })
+  //this is another way of implementing smooth scroll
+  //this is supported in modern browsers
+  section1.scrollIntoView({behavior:'smooth'})
+})
+//mousenter ==hover
+const headingFunction=function(e){
+  alert('addEventListener: Great! You are reading the heading')
+  h1.removeEventListener('mouseenter',headingFunction)
+}
+const h1=document.querySelector('h1');
+h1.addEventListener('mouseenter',headingFunction)
+
+//old school way of writing event listeners
+// h1.onmouseenter=function(e){
+//   alert('addEventListener: Great! You are reading the heading')
+// }
+
 
 //Lectures
 //Selecting entire document
@@ -62,3 +101,45 @@ document.querySelector('.btn--close-cookie').addEventListener('click',function()
   message.remove()//remove element from DOM
   // message.parentElement.removeChild(message)//previous JS method of deleting child nodes
 })
+
+//styles in js
+//the style that we set here are in-line styles
+message.style.backgroundColor='#37383d'
+message.style.width="100%"
+
+//to get the computed style of an element 
+// console.log(getComputedStyle('message'))
+message.style.height=Number.parseFloat(getComputedStyle(message).height)+40+'px'
+
+//if we are using any css variables using :root  then we can change the value of it using below method
+// document.documentElement.style.setProperty('--color-primary','orange')
+
+//attributes of elements
+const logo=document.querySelector('.nav__logo')
+//these are the standard attributes on img elements
+console.log(logo.src)
+logo.alt="minimalist Logo"
+console.log(logo.alt)
+
+//non standard attribute of img element
+console.log(logo.designer)
+
+//get attribute
+//but still if you want to get the non-standard attribute also then you can use below method
+console.log(logo.getAttribute('designer'))
+
+//setting attribute to an element
+logo.setAttribute('company',"Bankist")
+console.log(logo.getAttribute('class'))
+
+const link=document.querySelector('.twitter-link')
+console.log(link.href)
+
+//all the data attributes of an element are stored in dataset object
+console.log(logo.dataset.versionNumber)
+
+//classes
+logo.classList.add('c')
+logo.classList.remove('c')
+logo.classList.toggle('c')
+logo.classList.contains('c')
