@@ -9,7 +9,8 @@ const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
-
+const btnScrollTo=document.querySelector('.btn--scroll-to')
+const section1=document.querySelector('#section--1')
 const openModal = function (e) {
   e.preventDefault()
   modal.classList.remove('hidden');
@@ -30,8 +31,6 @@ document.addEventListener('keydown', function (e) {
 });
 
 //smooth scroll
-const btnScrollTo=document.querySelector('.btn--scroll-to')
-const section1=document.querySelector('#section--1')
 btnScrollTo.addEventListener('click',function(e){
   const s1coords=section1.getBoundingClientRect()
   console.log(s1coords)
@@ -54,7 +53,7 @@ btnScrollTo.addEventListener('click',function(e){
 })
 //mousenter ==hover
 const headingFunction=function(e){
-  alert('addEventListener: Great! You are reading the heading')
+  // alert('addEventListener: Great! You are reading the heading')
   h1.removeEventListener('mouseenter',headingFunction)
 }
 const h1=document.querySelector('h1');
@@ -65,8 +64,32 @@ h1.addEventListener('mouseenter',headingFunction)
 //   alert('addEventListener: Great! You are reading the heading')
 // }
 
+//smooth scroll for different sections of Nav
+//the problem with this method is that for each nav element this function will be created and called which is inefficient for performance.
+// document.querySelectorAll('.nav__link').forEach((data,index)=>{
+//   data.addEventListener('click',function(e){
+//     e.preventDefault()
+//     console.log("Link")
+//     const id=this.getAttribute("href")
+//     console.log(id)
+//     document.querySelector(id).scrollIntoView({behavior:'smooth'})
+//   })
+// })
 
+//event delegation - its better to select the parent of those nav elements and on that create an event.
+//efficient method
+document.querySelector('.nav__links').addEventListener('click',function(e){
+  e.preventDefault()
+  if(e.target.classList.contains('nav__link')){
+    console.log(e.target)
+    const id=e.target.getAttribute("href")
+    console.log(id)
+    document.querySelector(id).scrollIntoView({behavior:'smooth'})
+  }
+})
 //Lectures
+
+
 //Selecting entire document
 console.log(document.documentElement)
 
@@ -143,3 +166,38 @@ logo.classList.add('c')
 logo.classList.remove('c')
 logo.classList.toggle('c')
 logo.classList.contains('c')
+//rgb(255,255,255)
+const randomInt=(min,max)=>Math.floor(Math.random()*(max-min+1)+min)
+const randomColor=()=>`rgb(${randomInt(0,255)},${randomInt(0,255)},${randomInt(0,255)})`
+console.log(randomColor())
+document.querySelector('.nav__link').addEventListener('click',function(e){
+  console.log("Single Nav Link")
+  console.log(e.target)//the place where the first event occured, it is not dependent on addition of event handler on the element.
+  //in this scenario the single nav element caused the event to fire on "Single Nav Link","parent Nav Link","header Nav Link"
+  //this is known as event bubbling:target--->parent
+  console.log(e.currentTarget)//the place where the event handler occured
+
+  //this in event listeners corresponds to the elements to which the event listeners are attached
+  console.log(this)
+
+   //stop propagation for the parent elements if there are any
+   // e.stopPropagation()
+})
+//addEventListener method captures the event during the bubbling phase not capturing phase.
+document.querySelector('.nav__links').addEventListener('click',function(e){
+  console.log("parent Nav Link")
+  console.log(e.target)//the place where the first event occured, it is not dependent on addition of event handler on the element.
+  console.log(e.currentTarget)//the place where the event handler occured
+})
+document.querySelector('.nav').addEventListener('click',function(e){
+  console.log("header Nav Link")
+  console.log(e.target)//the place where the first event occured, it is not dependent on addition of event handler on the element.
+  console.log(e.currentTarget)//the place where the event handler occured
+})
+//if we want to add capturing phase to addEventListener method then we pass a third parameter to addEventListener method as "true".
+//bu default it is set to false
+// document.querySelector('.nav').addEventListener('click',function(e){
+//   console.log("header Nav Link")
+//   console(e.target)//the place where the first event occured, it is not dependent on addition of event handler on the element.
+//   console.log(e.currentTarget)//the place where the event handler occured
+// },true)
