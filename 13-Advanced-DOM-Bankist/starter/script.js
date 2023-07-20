@@ -11,6 +11,10 @@ const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo=document.querySelector('.btn--scroll-to')
 const section1=document.querySelector('#section--1')
+const tabs=document.querySelectorAll('.operations__tab')
+const tabsContainer=document.querySelector('.operations__tab-container')
+const tabsContent=document.querySelectorAll('.operations__content')
+const nav=document.querySelector('.nav')
 const openModal = function (e) {
   e.preventDefault()
   modal.classList.remove('hidden');
@@ -87,8 +91,41 @@ document.querySelector('.nav__links').addEventListener('click',function(e){
     document.querySelector(id).scrollIntoView({behavior:'smooth'})
   }
 })
-//Lectures
 
+//Tabbed component
+tabsContainer.addEventListener('click',function(e){
+  const clicked=e.target.closest('.operations__tab')
+  // console.log(clicked)
+  if(!clicked) return;
+  //first removing active class from all elements of tabs
+  tabs.forEach(t=>t.classList.remove('operations__tab--active'))
+  //then adding it to the clicked element
+  clicked.classList.add("operations__tab--active")
+  //removing all the active class from contents container
+  tabsContent.forEach(t=>t.classList.remove('operations__content--active'))
+  //adding the active class to the selected tab
+  document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.add('operations__content--active')
+})
+
+//menu fade animation
+const handleHover=function(e){
+  if(e.target.classList.contains('nav__link')){
+    const link=e.target
+    const siblings=link.closest('.nav').querySelectorAll('.nav__link')
+    const logo=link.closest('.nav').querySelector('img')
+    siblings.forEach((el)=>{
+      if(el!==link){
+        el.style.opacity=this
+      }
+    })
+    logo.style.opacity=this
+  }
+}
+nav.addEventListener('mouseover',(e)=>handleHover.bind(0.5))
+nav.addEventListener('mouseout',(e)=>handleHover.bind(1))
+
+
+//Lectures
 
 //Selecting entire document
 console.log(document.documentElement)
@@ -201,3 +238,27 @@ document.querySelector('.nav').addEventListener('click',function(e){
 //   console(e.target)//the place where the first event occured, it is not dependent on addition of event handler on the element.
 //   console.log(e.currentTarget)//the place where the event handler occured
 // },true)
+
+
+//DOM traversing
+const heading1=document.querySelector('h1')
+
+//going downwards in the chidren of h1
+//the below statement returns the nodelist which has class named 'highlight' in h1 element
+console.log(heading1.querySelectorAll('.highlight'))
+//below statement returns the nodelist which has all the nodes which are child of h1 element
+console.log(heading1.childNodes)
+//below statement returns the HTMLCollection which has all the direct children of h1 element
+console.log(heading1.children)
+//setting style of first direct children of h1 element
+// heading1.firstElementChild.style.color="white"
+
+//going upwards in the parent of h1
+//below statement prints the direct parent of h1 element
+console.log(heading1.parentNode)
+//below statement prints the parent of h1 element
+console.log(heading1.parentElement)
+
+//accessing sibling
+console.log(heading1.previousElementSibling)
+console.log(heading1.nextElementSibling)
