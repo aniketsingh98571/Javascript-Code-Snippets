@@ -195,6 +195,86 @@ imgTargets.forEach((img)=>{
   imgObserver.observe(img)
 })
 
+//Slider Component
+const slides=document.querySelectorAll('.slide')
+let curSlide=0;
+const maxSlides=slides.length
+slides.forEach((slide,index)=>{
+  slide.style.transform=`translateX(${index*100}%)`
+})
+const btnLeft=document.querySelector('.slider__btn--left')
+const btnRight=document.querySelector('.slider__btn--right')
+const slider=document.querySelector('.slider')
+const dotContainer=document.querySelector('.dots')
+const createDots=function(){
+  slides.forEach((slide,index)=>{
+    dotContainer.insertAdjacentHTML('beforeend',`<button class="dots__dot" data-slide="${index}"></button>`)
+  })
+}
+createDots()
+const activeDot=(curSlide)=>{
+  console.log(curSlide)
+  const dots=document.querySelectorAll('.dots__dot')
+  dots.forEach((dot)=>{
+    dot.classList.remove('dots__dot--active')
+  })
+  // console.log(document.querySelector(`.dots__dot[data-slide="${curSlide}"]`))
+  document.querySelector(`.dots__dot[data-slide="${curSlide}"]`).classList.add('dots__dot--active')
+}
+// slider.style.transform=`scale(0.2)`
+// slider.style.overflow='visible'
+
+//next slide
+const goToSlide=function(slide){
+  slides.forEach((slides,index)=>{
+    slides.style.transform=`translateX(${(index-slide)*100}%)`
+  })
+  activeDot(slide)
+}
+goToSlide(0)
+const nextSlide=()=>{
+  console.log(maxSlides)
+
+  if(curSlide===maxSlides-1){
+    curSlide=0
+  }
+  else{
+    curSlide++;
+    }
+  goToSlide(curSlide)
+  activeDot(curSlide)
+}
+const prevSlide=()=>{
+  if(curSlide<=0){
+    curSlide=0
+  }
+  else{
+    curSlide--
+   }
+  goToSlide(curSlide)
+  activeDot(curSlide)
+  
+}
+
+
+dotContainer.addEventListener('click',function(e){
+  if(e.target.classList.contains('dots__dot')){
+    console.log(e.target.dataset)
+    const {slide}=e.target.dataset;
+    console.log(slide)
+    goToSlide(slide)
+  }
+})
+btnRight.addEventListener('click',nextSlide)
+btnLeft.addEventListener('click',prevSlide)
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowLeft'){
+    prevSlide()
+  }
+  else if(e.key==='ArrowRight'){
+    nextSlide()
+  }
+})
 //Lectures
 
 //Selecting entire document
