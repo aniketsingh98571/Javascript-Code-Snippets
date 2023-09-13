@@ -81,7 +81,7 @@ class PersonCl{
     constructor(firstName,birthYear){
         this.firstName=firstName,
         this.birthYear=birthYear
-    }
+    }PersonCl
     calcAge(){
         console.log(2037-this.birthYear)
     }
@@ -227,3 +227,65 @@ EV.prototype.accelerate=function(){
     this.speed+20
     this.charge-1
 }
+
+//Inheritance in JS using Classes
+class StudentCl extends PersonCl{
+    constructor(firstName,birthYear,course){
+        super(firstName,birthYear);  //super is the parent constructor
+        this.course=course
+    }
+    introduce(){
+        console.log(`My name is ${this._fullName}, I study ${this.course}`)
+    }
+}
+const aniket=new StudentCl("aniket singh",2021,'CSE')
+aniket.introduce()
+aniket.calcAge() 
+
+//Inheritance in JS using Object.create
+const steven2=Object.create(PersonProto)
+const StudentProto=Object.create(PersonProto)
+StudentProto.init=function(firstName,birthYear,course){
+    PersonProto.init.call(this,firstName,birthYear)
+    this.course=course
+}
+StudentProto.introduce=function(){
+    console.log(`My name is ${this.firstName}`)
+}
+const jay=Object.create(StudentProto)
+jay.init("jay",2021,'cse')
+jay.introduce()
+
+//Another Class
+class Account{
+    constructor(owner,currency,pin){
+        this.owner=owner,
+        this.currency=currency,
+      
+        //protected members
+        this._movement=[]
+        this._pin=pin
+    }
+
+    //Public Interface
+    deposit(val){
+        this._movement.push(val)
+    }
+    withdrawl(val){
+        this.deposit(-val)
+    }
+
+    //protected method
+    _approveLoan(val){ //this method should not be available to the public
+        return true
+    }
+    requestLoan(val){ 
+        if(this._approveLoan(val)){
+            this.deposit(val)
+        }
+    }
+}
+const acc1=new Account('Jonas','EUR',1111)
+acc1.deposit(5)
+acc1.withdrawl(5)
+console.log (acc1)
