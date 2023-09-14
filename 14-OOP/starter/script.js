@@ -270,18 +270,25 @@ class Account{
     //Public Interface
     deposit(val){
         this._movement.push(val)
+      //we are returning this cz we want to implement chaining of methods, so 'this' will return the current account instance with the methods as prototypes
+        return this;
     }
     withdrawl(val){
         this.deposit(-val)
+       //we are returning this cz we want to implement chaining of methods, so 'this' will return the current account instance with the methods as prototypes
+        return this;
     }
 
     //protected method
     _approveLoan(val){ //this method should not be available to the public
         return true
+ 
     }
     requestLoan(val){ 
         if(this._approveLoan(val)){
             this.deposit(val)
+            //we are returning this cz we want to implement chaining of methods, so 'this' will return the current account instance with the methods as prototypes
+            return this;
         }
     }
 }
@@ -289,3 +296,31 @@ const acc1=new Account('Jonas','EUR',1111)
 acc1.deposit(5)
 acc1.withdrawl(5)
 console.log (acc1)
+
+//chaining methods
+acc1.deposit(200).deposit(500).withdrawl(20).requestLoan(200).withdrawl(500)
+
+//Coding Challenge 4
+class EVCL extends CarProto{
+    #charge;
+    constructor(make,speed,battery){
+        super(make,speed)
+        this.battery=battery
+    }
+    accelerate(){
+        this.speed=this.speed+10
+        return this
+    }
+    brake(){
+        this.speed=this.speed-5
+    }
+    chargeBattery(){
+        this.battery=this.battery+10
+        this.#charge=this.#charge+10
+        return this
+    }
+
+}
+const newCar=new EVCL("BMW",25,100)
+newCar.accelerate().accelerate().brake()
+console.log(newCar)
