@@ -12,3 +12,4 @@
   password-1111
 
 - [Dom Bankist](https://dom-bankisht.netlify.app)
+- [Mapty](https://mapty-my-workout.netlify.app/)
