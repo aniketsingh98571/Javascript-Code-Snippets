@@ -52,3 +52,44 @@ function countries(coutry){
 }
 countries("Portugal")
 // countries("Germany")
+
+//fetch api
+const data=fetch("https://restcountries.com/v3.1/name/India")
+// console.log(data)
+
+//promises and promise chaining
+const getCountryData=function(country){
+    const data=fetch(`https://restcountries.com/v3.1/name/${country}`)
+    data.then((response)=>response.json()).then((res)=>{
+        const data=res[0]?.borders[0]
+        return fetch(`https://restcountries.com/v3.1/alpha/${data}`)  //returns another promise
+      }).then((response)=>response.json()).then((res)=>console.log(res))
+}
+getCountryData("Portugal")
+
+//handling error
+const data1=fetch(`https://restcountries.com/v3.1/name/Inia`)
+data.then((response)=>response.json()).then((res)=>{console.log(res)}).catch((err)=>console.log(err))
+
+
+//Coding Challenge
+const whereAmI=function(lat,long){
+    const geocodingResult=geoCoding(lat,long)
+    geocodingResult.then((data)=>{
+        console.log(data)
+        console.log(`You are in ${data.city}`)
+        const data1=fetch(`https://restcountries.com/v3.1/name/${data.country}`)
+        return data1
+    
+    }).then((response)=>response.json()).then((res)=>{
+        if(res.status===404){
+            throw new Error("Could not find country") //using Error object to throw error which will be catched by '.catch()' method
+        }
+    })
+    .catch((err)=>console.log(err))
+}
+const geoCoding=function(lat,long){
+    const result=fetch(`https://geocode.xyz/${lat},${long}?geoit=json`)
+    return result.then((response)=>response.json()).then((res)=>res) //returns another promise.
+}
+whereAmI(19.997454,73.789803)
