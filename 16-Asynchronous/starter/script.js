@@ -68,7 +68,7 @@ const getCountryData=function(country){
 getCountryData("Portugal")
 
 //handling error
-const data1=fetch(`https://restcountries.com/v3.1/name/Inia`)
+const data1=fetch(`https://restcountries.com/v3.1/name/India`)
 data.then((response)=>response.json()).then((res)=>{console.log(res)}).catch((err)=>console.log(err))
 
 
@@ -83,7 +83,7 @@ const whereAmI=function(lat,long){
     
     }).then((response)=>response.json()).then((res)=>{
         if(res.status===404){
-            throw new Error("Could not find country") //using Error object to throw error which will be catched by '.catch()' method
+            throw new Error(" Could not find country") //using Error object to throw error which will be catched by '.catch()' method
         }
     })
     .catch((err)=>console.log(err))
@@ -93,3 +93,28 @@ const geoCoding=function(lat,long){
     return result.then((response)=>response.json()).then((res)=>res) //returns another promise.
 }
 whereAmI(19.997454,73.789803)
+
+//Creating a promise
+const lotteryPromise=new Promise(function(resolve,reject){
+    if(Math.random()>=0.5){
+        resolve('You WIN!')
+    }
+    else {
+        reject("You LOSE!")
+    }
+})
+lotteryPromise.then((data)=>{
+    console.log(data)
+}).catch((err)=>{
+    console.log(err)
+})
+
+//Promisifying setTimeout
+const wait=function(seconds){
+    return new Promise(function(resolve){
+        setTimeout(()=>resolve(),seconds*1000)
+    })
+}
+wait(2).then(()=>{
+    console.log("I ran after 2 secs")
+})
