@@ -1,5 +1,7 @@
 'use strict';
-
+const imgPathOne='./img/img-1.jpg'
+const imgPathTwo='./img/img-2.jpg'
+const imgPathThree='./img/img-3.jpg'
 const btn = document.querySelector('.btn-country');
 const countriesContainer = document.querySelector('.countries');
 
@@ -118,3 +120,70 @@ const wait=function(seconds){
 wait(2).then(()=>{
     console.log("I ran after 2 secs")
 })
+
+//promisifying geolocation web api
+const getPosition=function(){
+    return new Promise(function(resolve,reject){
+        navigator.geolocation.getCurrentPosition((position)=>{
+            resolve(position)
+        },(err)=>{
+            reject(err)
+        })
+    })
+}
+getPosition().then((data)=>{
+    console.log(data)
+})
+
+//Coding Challenge 2
+const createImage=(path)=>{
+    return new Promise((resolve,reject)=>{
+        const imgEle=document.createElement('img')
+        imgEle.src=path
+        imgEle.addEventListener('load',function(){
+            // imgEle.classList.add(`class`)
+             resolve(imgEle)
+        })
+    })
+}
+const showImage=(data)=>{
+  document.body.appendChild(data)
+}
+let currImage;
+const arr=[imgPathOne,imgPathTwo,imgPathThree]
+let index=0
+createImage(imgPathOne).then((data)=>{
+    currImage=data
+    showImage(data)
+    return wait(2)
+}).then(()=>{
+    currImage.style.display="none"
+    return createImage(imgPathTwo)
+}).then((img)=>{
+    currImage=img
+    showImage(img)
+    return wait(2)
+}).then(()=>{
+    currImage.style.display="none"
+})
+
+//async/await
+const findCountry=async function(country){
+    const data1=await fetch(`https://restcountries.com/v3.1/name/${country}`)
+    const tempData=await data1.json()
+    console.log(tempData)
+}
+const find=findCountry("India")
+console.log(find)
+
+//try & catch with async/await
+const catchDemo=async()=>{
+    try{
+        const data1=await fetch(`https://restcountries.com/v3.1/name/${country}`)
+    const tempData=await data1.json()
+    console.log(tempData)
+    }catch(err){
+        console.log(err)
+    }
+}
+catchDemo()
