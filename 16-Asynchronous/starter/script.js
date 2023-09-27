@@ -187,3 +187,55 @@ const catchDemo=async()=>{
     }
 }
 catchDemo()
+
+//Returning the data in async/await
+const returnDemo=async()=>{
+    try{
+        const data=await fetch(`https://restcountries.com/v3.1/name/India`)
+        const tempData=await data.json()
+        return tempData
+     }
+     catch(err){
+        throw err
+     }
+}
+const tempData=returnDemo()
+console.log(tempData)
+const get3Countries=async()=>{
+    try{
+        const dataOne=await fetch(`https://restcountries.com/v3.1/name/America`)
+        const dataTwo=await fetch(`https://restcountries.com/v3.1/name/Japan`)
+        const dataThree=await fetch(`https://restcountries.com/v3.1/name/Canada`)
+        const tempDataOne=await dataOne.json()
+        const tempDataTwp=await dataTwo.json()
+        const tempDataThree=await dataThree.json()
+        console.log(tempDataOne," ",tempDataTwp,"  ",tempDataThree)
+    }
+    catch(err){
+        throw err
+    }
+}
+get3Countries()
+
+//Parallel Requests
+const getAnotherCountries=async()=>{
+    try{
+        const data=await Promise.all([ fetch(`https://restcountries.com/v3.1/name/Portugal`), fetch(`https://restcountries.com/v3.1/name/Ukraine`),fetch(`https://restcountries.com/v3.1/name/Russia`)])
+        console.log(data)
+    }
+    catch(err){
+        throw err
+    }
+}
+getAnotherCountries()
+const getSomeMoreCounties=async()=>{
+    const dataOne=fetch(`https://restcountries.com/v3.1/name/America`)
+    const dataTwo=fetch(`https://restcountries.com/v3.1/name/Japan`)
+    const dataThree=fetch(`https://restcountries.com/v3.1/name/Canada`)
+    const tempData=await Promise.all([dataOne,dataTwo,dataThree])
+    console.log(tempData)
+}
+getSomeMoreCounties()
+
+//Coding Challenge 3
+ 
