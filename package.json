@@ -1,0 +1,23 @@
+{
+  "name": "complete-javascript-course",
+  "version": "1.0.0",
+  "description": "javascript course",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aniketsingh98571/Javascript-Code-Snippets.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aniketsingh98571/Javascript-Code-Snippets/issues"
+  },
+  "homepage": "https://github.com/aniketsingh98571/Javascript-Code-Snippets#readme",
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "lodash-es": "^4.17.21"
+  }
+}
