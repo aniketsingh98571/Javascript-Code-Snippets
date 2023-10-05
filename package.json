@@ -2,9 +2,9 @@
   "name": "complete-javascript-course",
   "version": "1.0.0",
   "description": "javascript course",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+     "start": "parcel ./17-Modern-JS-Modules-Tooling/starter/index.html",
+     "build":"parcel build ./17-Modern-JS-Modules-Tooling/starter/index.html "
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,8 @@
   "dependencies": {
     "leaflet": "^1.9.4",
     "lodash-es": "^4.17.21"
+  },
+  "devDependencies": {
+    "parcel": "^2.9.3"
   }
 }
