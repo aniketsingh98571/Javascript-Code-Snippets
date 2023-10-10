@@ -3,6 +3,8 @@
  class RecipeView{
     #parentElement =  document.querySelector('.recipe');
     #data;
+    #erroMessage='Coult not find Recipe, Please try another one.'
+    #message='Successful';
     render(data){
         this.#data=data
         const markUp=this.#generateMarkup()
@@ -23,6 +25,41 @@
     this.#parentElement.innerHTML=''
     this.#parentElement.insertAdjacentHTML('afterbegin',markUp)
   }
+  renderError(message=this.#erroMessage){
+    const markUp = `
+    <div class="error">
+    <div>
+      <svg>
+        <use href="${icons}#icon-alert-triangle"></use>
+      </svg>
+    </div>
+    <p>{${message}}</p>
+  </div>
+    `
+    this.#clear()
+    this.#parentElement.insertAdjacentHTML('afterbegin',markUp)
+  }
+  renderMessage(message=this.#message){
+    const markUp = `
+    <div class="message">
+    <div>
+      <svg>
+        <use href="${icons}#icon-smile"></use>
+      </svg>
+    </div>
+    <p>{${message}}</p>
+  </div>
+    `
+    this.#clear()
+    this.#parentElement.insertAdjacentHTML('afterbegin',markUp)
+  }
+
+  addHandlerRender(handler){
+    const events=['hashchange','load'] 
+     events.forEach(element => {
+         window.addEventListener(element,handler)
+     });
+}
 
     #generateMarkup(){
          

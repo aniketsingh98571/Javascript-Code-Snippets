@@ -19,6 +19,7 @@ export const loadRecipe=async(id)=>{
             }
     }
     catch(err){
-        alert(err)
+        // alert(err)
+        throw err
     }
 }
