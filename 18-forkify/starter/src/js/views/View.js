@@ -50,4 +50,32 @@ export default class View{
     this._clear()
     this._parentElement.insertAdjacentHTML('afterbegin',markUp)
   }
+  update(data){
+    this._data=data
+    const newMarkUp=this._generateMarkup()
+    //creating a mini replica of updated dom here so that we can compare it with previous dom
+    const newDOM=document.createRange().createContextualFragment(newMarkUp)
+    const newElements=Array.from(newDOM.querySelectorAll('*'))
+    // console.log(newElements)
+    
+    //selecting all the elements that are available on current dom
+    const currentElement=Array.from(this._parentElement.querySelectorAll('*')) 
+ 
+    //comparing new dom with old dom and rendering only the changed fields
+    newElements.forEach((newEl,i)=>{
+      const currEl=currentElement[i]
+      console.log(newEl.isEqualNode(currEl))
+      if(!newEl.isEqualNode(currEl)&&newEl?.firstChild?.nodeValue.trim()!==''){
+        currEl.textContent=newEl.textContent
+      }
+
+      //updating the attributes also
+      if(!newEl.isEqualNode(currEl)){
+        console.log(newEl.attributes)
+        Array.from(newEl.attributes).forEach((attr)=>{
+          currEl.setAttribute(attr.name,attr.value)
+        })
+      }
+    })
+  }
 }

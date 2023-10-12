@@ -7,6 +7,7 @@ import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
 import paginationView from './views/paginationView.js';
+import { mod } from '@tensorflow/tfjs';
 if(module.hot){
   module.hot.accept()
 }
@@ -18,17 +19,22 @@ const controlRecipe=async function(){
     const id = window.location.hash.slice(1);
     if(!id) return
     recipeView.renderSpinner(recipeContainer)
+    
+    resultsView.update(model.getSearchResultsPage())
+
     await model.loadRecipe(id)
     console.log("loaded")
     const {recipe}=model.state
 
     //rendering data
     recipeView.render(model.state.recipe)
+    // controlServings()
 }
   catch(err){
     // alert(err)
     recipeView.renderError()
   }
+
 }
 const controlSearchResults=async function(){
   try{
@@ -50,10 +56,26 @@ const controlPagination = function(page){
   resultsView.render(model.getSearchResultsPage(page))
   paginationView.render(model.state.search)
 }
+const controlServings = function(serving){
+  model.updateServings(serving)
+  // recipeView.render(model.state.recipe)
+  recipeView.update(model.state.recipe)
+}
+const controlAddBookMark=function(){
+  if(!model.state.recipe.bookmarked){
+    model.addBookMark(model.state.recipe)
+    }
+  else{
+    model.deleteBookmark(model.state.recipe.id)
+  }
+  recipeView.update(model.state.recipe)
+}
 controlSearchResults()
 const init=function(){
   recipeView.addHandlerRender(controlRecipe)
+  recipeView.addHandlerUpdaterServings(controlServings)
   searchView.addHandlerSearch(controlSearchResults)
   paginationView.addHandlerClick(controlPagination)
+  recipeView.addHandlerBookmark(controlAddBookMark)
 }
 init()
